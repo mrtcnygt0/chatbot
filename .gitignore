@@ -1,0 +1,39 @@
+# Configuration
+config/config.php
+
+# Logs
+*.log
+error_log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+/tmp/
+temp/
+
+# Vendor (if using Composer)
+/vendor/
+
+# Node modules (if using npm)
+node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+
+# Backups
+*.bak
+*.backup
