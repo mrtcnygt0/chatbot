@@ -37,6 +37,8 @@ A complete, production-ready ChatGPT-like web application with modern UI, secure
 
 ## 🚀 Installation
 
+### Standard Installation (Root Directory)
+
 1. **Clone or download this repository**
    ```bash
    git clone https://github.com/mrtcnygt0/chatbot.git
@@ -60,6 +62,21 @@ A complete, production-ready ChatGPT-like web application with modern UI, secure
    - After installation, you'll be redirected to the login page
    - Login with your admin credentials
    - Start chatting or manage users from the admin panel
+
+### Subdirectory Installation
+
+**NEW:** The application now supports subdirectory deployment with automatic path detection!
+
+If deploying to a subdirectory (e.g., `/portfolio/chatbot/`):
+
+1. Upload all files to your subdirectory
+2. Navigate to `http://your-domain.com/portfolio/chatbot/install.php`
+3. The installer will **auto-detect** the base path and configure everything
+4. No manual configuration needed!
+
+**See detailed guide:** [SUBDIRECTORY_DEPLOYMENT.md](SUBDIRECTORY_DEPLOYMENT.md)
+
+**Quick test:** Upload `test-path.php` to verify path detection is working.
 
 ## 📁 Project Structure
 
