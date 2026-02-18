@@ -41,8 +41,13 @@ class Response {
      * Redirect
      */
     public static function redirect($url) {
-        header("Location: {$url}");
-        exit;
+        // Use Url helper if available
+        if (class_exists('Url')) {
+            Url::redirect($url);
+        } else {
+            header("Location: {$url}");
+            exit;
+        }
     }
 
     /**

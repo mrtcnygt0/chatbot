@@ -3,11 +3,20 @@
 class AuthApp {
     constructor() {
         this.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+        this.basePath = window.BASE_PATH || '';
         this.init();
     }
 
     init() {
         this.attachEventListeners();
+    }
+
+    url(path) {
+        // Helper to generate correct URL with base path
+        if (path.startsWith('/')) {
+            path = path.substring(1);
+        }
+        return this.basePath ? this.basePath + '/' + path : '/' + path;
     }
 
     attachEventListeners() {
@@ -43,7 +52,7 @@ class AuthApp {
         this.setButtonLoading(submitBtn, true);
 
         try {
-            const response = await fetch('/api/login.php', {
+            const response = await fetch(this.url('/api/login.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +103,7 @@ class AuthApp {
         this.setButtonLoading(submitBtn, true);
 
         try {
-            const response = await fetch('/api/register.php', {
+            const response = await fetch(this.url('/api/register.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

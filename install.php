@@ -252,6 +252,12 @@
                 $configContent .= "    'app' => [\n";
                 $configContent .= "        'name' => 'AI Chat',\n";
                 $configContent .= "        'url' => 'http://localhost',\n";
+                
+                // Auto-detect base path
+                $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/install.php';
+                $basePath = rtrim(dirname($scriptName), '/');
+                $configContent .= "        'base_path' => '{$basePath}',\n";
+                
                 $configContent .= "        'environment' => 'production',\n";
                 $configContent .= "        'debug' => false,\n";
                 $configContent .= "        'timezone' => 'UTC',\n";
@@ -314,7 +320,10 @@
                 <strong>Admin Credentials:</strong><br>
                 Email: <?php echo htmlspecialchars($_POST['admin_email']); ?><br>
                 <br>
-                <a href="/login.php" style="color: inherit; font-weight: bold;">→ Go to Login Page</a>
+                <a href="<?php 
+                    // Use relative path for subdirectory support
+                    echo dirname($_SERVER['SCRIPT_NAME']) . '/login.php'; 
+                ?>" style="color: inherit; font-weight: bold;">→ Go to Login Page</a>
             </div>
         <?php else: ?>
             <div class="requirements">

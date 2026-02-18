@@ -5,6 +5,7 @@ class ChatApp {
         this.currentConversationId = null;
         this.isLoading = false;
         this.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+        this.basePath = window.BASE_PATH || '';
         
         this.init();
     }
@@ -52,7 +53,7 @@ class ChatApp {
 
     async loadConversations() {
         try {
-            const response = await this.fetch('/api/conversations.php');
+            const response = await this.fetch(this.url('/api/conversations.php'));
             const data = await response.json();
             
             if (data.success) {
@@ -91,7 +92,7 @@ class ChatApp {
 
     async createNewConversation() {
         try {
-            const response = await this.fetch('/api/conversations.php', {
+            const response = await this.fetch(this.url('/api/conversations.php', {
                 method: 'POST',
                 body: JSON.stringify({ action: 'create', title: 'New Chat' })
             });
@@ -200,7 +201,7 @@ class ChatApp {
         this.showTypingIndicator();
         
         try {
-            const response = await this.fetch('/api/chat.php', {
+            const response = await this.fetch(this.url('/api/chat.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     conversation_id: this.currentConversationId,
@@ -275,7 +276,7 @@ class ChatApp {
         if (!newTitle) return;
         
         try {
-            const response = await this.fetch('/api/conversations.php', {
+            const response = await this.fetch(this.url('/api/conversations.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     action: 'rename',
@@ -303,7 +304,7 @@ class ChatApp {
         if (!confirm('Are you sure you want to delete this conversation?')) return;
         
         try {
-            const response = await this.fetch('/api/conversations.php', {
+            const response = await this.fetch(this.url('/api/conversations.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     action: 'delete',
@@ -330,7 +331,7 @@ class ChatApp {
 
     async loadUserQuota() {
         try {
-            const response = await this.fetch('/api/quota.php');
+            const response = await this.fetch(this.url('/api/quota.php');
             const data = await response.json();
             
             if (data.success) {
@@ -359,11 +360,11 @@ class ChatApp {
 
     async logout() {
         try {
-            const response = await this.fetch('/api/logout.php', { method: 'POST' });
+            const response = await this.fetch(this.url('/api/logout.php'), { method: 'POST' });
             const data = await response.json();
             
             if (data.success) {
-                window.location.href = '/login.php';
+                window.location.href = this.url('/login.php');
             }
         } catch (error) {
             this.showError('Failed to logout');
@@ -410,6 +411,14 @@ class ChatApp {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    url(path) {
+        // Helper to generate correct URL with base path
+        if (path.startsWith('/')) {
+            path = path.substring(1);
+        }
+        return this.basePath ? this.basePath + '/' + path : '/' + path;
     }
 
     async fetch(url, options = {}) {

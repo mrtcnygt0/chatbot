@@ -9,6 +9,7 @@ return [
     'app' => [
         'name' => 'AI Chat',
         'url' => 'http://localhost',
+        'base_path' => '', // Leave empty for root, or '/portfolio/chatbot' for subdirectory
         'environment' => 'production', // development, production
         'debug' => false,
         'timezone' => 'UTC',

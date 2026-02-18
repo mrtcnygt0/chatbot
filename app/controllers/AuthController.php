@@ -7,6 +7,7 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../helpers/Security.php';
 require_once __DIR__ . '/../helpers/Validator.php';
 require_once __DIR__ . '/../helpers/Response.php';
+require_once __DIR__ . '/../helpers/Url.php';
 require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
 require_once __DIR__ . '/../middlewares/RateLimitMiddleware.php';
 require_once __DIR__ . '/../middlewares/CsrfMiddleware.php';
@@ -57,7 +58,7 @@ class AuthController {
             // Auto-login
             AuthMiddleware::login($userId, $email, 'user');
             
-            Response::success('Registration successful', ['redirect' => '/']);
+            Response::success('Registration successful', ['redirect' => Url::to('')]);
             
         } catch (Exception $e) {
             error_log('Registration error: ' . $e->getMessage());
@@ -102,7 +103,7 @@ class AuthController {
             // Reset rate limit on successful login
             RateLimitMiddleware::reset($email, 'login');
             
-            $redirect = $user['role'] === 'admin' ? '/admin' : '/';
+            $redirect = $user['role'] === 'admin' ? Url::admin('') : Url::to('');
             
             Response::success('Login successful', ['redirect' => $redirect]);
             
@@ -118,7 +119,7 @@ class AuthController {
     public function logout() {
         try {
             AuthMiddleware::logout();
-            Response::success('Logged out successfully', ['redirect' => '/login.php']);
+            Response::success('Logged out successfully', ['redirect' => Url::to('login.php')]);
             
         } catch (Exception $e) {
             error_log('Logout error: ' . $e->getMessage());

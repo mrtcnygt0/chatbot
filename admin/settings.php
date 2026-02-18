@@ -7,6 +7,7 @@
     <?php
     require_once __DIR__ . '/../app/middlewares/AuthMiddleware.php';
     require_once __DIR__ . '/../app/middlewares/CsrfMiddleware.php';
+    require_once __DIR__ . '/../app/helpers/Url.php';
     require_once __DIR__ . '/../config/database.php';
     
     AuthMiddleware::requireAdmin();
@@ -19,8 +20,8 @@
     $stmt = $db->query("SELECT * FROM system_settings ORDER BY setting_key");
     $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="stylesheet" href="<?php echo Url::asset('css/main.css'); ?>">
+    <link rel="stylesheet" href="<?php echo Url::asset('css/admin.css'); ?>">
 </head>
 <body>
     <div class="admin-layout">
@@ -31,19 +32,19 @@
             </div>
 
             <nav class="admin-nav">
-                <a href="/admin" class="admin-nav-item">
+                <a href="<?php echo Url::admin(''); ?>" class="admin-nav-item">
                     📊 Dashboard
                 </a>
-                <a href="/admin/users.php" class="admin-nav-item">
+                <a href="<?php echo Url::admin('users.php'); ?>" class="admin-nav-item">
                     👥 Users
                 </a>
-                <a href="/admin/logs.php" class="admin-nav-item">
+                <a href="<?php echo Url::admin('logs.php'); ?>" class="admin-nav-item">
                     📜 API Logs
                 </a>
-                <a href="/admin/settings.php" class="admin-nav-item active">
+                <a href="<?php echo Url::admin('settings.php'); ?>" class="admin-nav-item active">
                     ⚙️ Settings
                 </a>
-                <a href="/" class="admin-nav-item">
+                <a href="<?php echo Url::to(''); ?>" class="admin-nav-item">
                     💬 Back to Chat
                 </a>
             </nav>
@@ -152,7 +153,8 @@
         </main>
     </div>
 
-    <script src="/assets/js/admin.js"></script>
+    <script>window.BASE_PATH = '<?php echo Url::getBasePath(); ?>';</script>
+    <script src="<?php echo Url::asset('js/admin.js'); ?>"></script>
     <script>
         async function updateSetting(key, value) {
             try {

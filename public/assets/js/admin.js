@@ -3,6 +3,7 @@
 class AdminApp {
     constructor() {
         this.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+        this.basePath = window.BASE_PATH || '';
         this.currentModal = null;
         this.init();
     }
@@ -10,6 +11,14 @@ class AdminApp {
     init() {
         this.loadDashboard();
         this.attachEventListeners();
+    }
+
+    url(path) {
+        // Helper to generate correct URL with base path
+        if (path.startsWith('/')) {
+            path = path.substring(1);
+        }
+        return this.basePath ? this.basePath + '/' + path : '/' + path;
     }
 
     attachEventListeners() {
@@ -31,7 +40,7 @@ class AdminApp {
 
     async loadDashboard() {
         try {
-            const response = await this.fetch('/admin/api/dashboard.php');
+            const response = await this.fetch(this.url('/admin/api/dashboard.php');
             const data = await response.json();
 
             if (data.success) {
@@ -101,7 +110,7 @@ class AdminApp {
 
     async loadUsers() {
         try {
-            const response = await this.fetch('/admin/api/users.php');
+            const response = await this.fetch(this.url('/admin/api/users.php');
             const data = await response.json();
 
             if (data.success) {
@@ -172,7 +181,7 @@ class AdminApp {
         if (!quotaTokens || !dailyLimit || !monthlyLimit) return;
 
         try {
-            const response = await this.fetch('/admin/api/update-quota.php', {
+            const response = await this.fetch(this.url('/admin/api/update-quota.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     user_id: userId,
@@ -197,7 +206,7 @@ class AdminApp {
 
     async toggleUserStatus(userId, isActive) {
         try {
-            const response = await this.fetch('/admin/api/toggle-status.php', {
+            const response = await this.fetch(this.url('/admin/api/toggle-status.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     user_id: userId,
@@ -222,7 +231,7 @@ class AdminApp {
         if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
 
         try {
-            const response = await this.fetch('/admin/api/delete-user.php', {
+            const response = await this.fetch(this.url('/admin/api/delete-user.php', {
                 method: 'POST',
                 body: JSON.stringify({ user_id: userId })
             });
@@ -242,7 +251,7 @@ class AdminApp {
 
     async toggleApiStatus(enabled) {
         try {
-            const response = await this.fetch('/admin/api/toggle-api.php', {
+            const response = await this.fetch(this.url('/admin/api/toggle-api.php', {
                 method: 'POST',
                 body: JSON.stringify({ enabled })
             });

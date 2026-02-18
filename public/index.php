@@ -7,14 +7,15 @@
     <?php
     require_once __DIR__ . '/../app/middlewares/AuthMiddleware.php';
     require_once __DIR__ . '/../app/middlewares/CsrfMiddleware.php';
+    require_once __DIR__ . '/../app/helpers/Url.php';
     
     AuthMiddleware::require();
     $user = AuthMiddleware::getUser();
     
     echo CsrfMiddleware::metaTag();
     ?>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/chat.css">
+    <link rel="stylesheet" href="<?php echo Url::asset('css/main.css'); ?>">
+    <link rel="stylesheet" href="<?php echo Url::asset('css/chat.css'); ?>">
 </head>
 <body>
     <div class="chat-layout">
@@ -65,7 +66,7 @@
                 </div>
                 <div class="chat-actions">
                     <?php if ($user['role'] === 'admin'): ?>
-                        <a href="/admin" class="btn btn-secondary btn-sm">
+                        <a href="<?php echo Url::admin(''); ?>" class="btn btn-secondary btn-sm">
                             ⚙️ Admin Panel
                         </a>
                     <?php endif; ?>
@@ -107,7 +108,10 @@
         document.getElementById('newChatBtn2')?.addEventListener('click', () => {
             document.getElementById('newChatBtn').click();
         });
+        
+        // Pass base path to JavaScript
+        window.BASE_PATH = '<?php echo Url::getBasePath(); ?>';
     </script>
-    <script src="/assets/js/app.js"></script>
+    <script src="<?php echo Url::asset('js/app.js'); ?>"></script>
 </body>
 </html>

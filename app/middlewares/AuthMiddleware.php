@@ -5,6 +5,7 @@
 
 require_once __DIR__ . '/../helpers/Security.php';
 require_once __DIR__ . '/../helpers/Response.php';
+require_once __DIR__ . '/../helpers/Url.php';
 require_once __DIR__ . '/../models/User.php';
 
 class AuthMiddleware {

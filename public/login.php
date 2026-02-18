@@ -7,19 +7,20 @@
     <?php
     require_once __DIR__ . '/../app/middlewares/AuthMiddleware.php';
     require_once __DIR__ . '/../app/middlewares/CsrfMiddleware.php';
+    require_once __DIR__ . '/../app/helpers/Url.php';
     
     AuthMiddleware::initSession();
     
     // Redirect if already logged in
     if (AuthMiddleware::check()) {
-        header('Location: /');
+        Url::redirect('');
         exit;
     }
     
     echo CsrfMiddleware::metaTag();
     ?>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/auth.css">
+    <link rel="stylesheet" href="<?php echo Url::asset('css/main.css'); ?>">
+    <link rel="stylesheet" href="<?php echo Url::asset('css/auth.css'); ?>">
 </head>
 <body>
     <div class="auth-page">
@@ -65,12 +66,13 @@
                 </form>
 
                 <div class="auth-link">
-                    Don't have an account? <a href="/register.php">Sign up</a>
+                    Don't have an account? <a href="<?php echo Url::to('register.php'); ?>">Sign up</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="/assets/js/auth.js"></script>
+    <script>window.BASE_PATH = '<?php echo Url::getBasePath(); ?>';</script>
+    <script src="<?php echo Url::asset('js/auth.js'); ?>"></script>
 </body>
 </html>
